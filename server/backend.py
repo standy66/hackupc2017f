@@ -1,8 +1,16 @@
 from flask import Flask, request
 import json
 import pymongo
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-d", "--debug", type=bool, help="debug mode", default=False)
+args = parser.parse_args()
 
 NAME = 'findmycar'
+
+print('DEBUG: %d' % args.debug)
 
 app = Flask(NAME)
 cli = pymongo.MongoClient('localhost', 27017)
@@ -23,6 +31,8 @@ def api():
 
 @app.route("/debug", methods=['GET', 'POST'])
 def debug():
+	if not args.debug:
+		return ""
 	out = []
 	for row in db.numbers.find():
 		out.append(str(row))
@@ -31,7 +41,8 @@ def debug():
 
 @app.route("/clear", methods=['GET', 'POST'])
 def clear():
-	db.numbers.remove({})
+	if args.debug:
+		db.numbers.remove({})
 	return ""
 
 

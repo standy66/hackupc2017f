@@ -3,6 +3,7 @@ import json
 import pymongo
 import argparse
 import os
+from collections import defaultdict
 from pyfcm import FCMNotification
 
 
@@ -11,6 +12,8 @@ parser.add_argument("-d", "--debug", type=bool, help="debug mode", default=False
 args = parser.parse_args()
 
 NAME = 'findmycar'
+
+subscriptions = defaultdict(list)
 
 print('DEBUG: %d' % args.debug)
 
@@ -22,6 +25,7 @@ push_service = FCMNotification(api_key=os.getenv("API_KEY"))
 
 @app.route("/api", methods=['GET', 'POST'])
 def api():
+    print(subscriptions)
     message_title = "Your car was found!"
     r = json.loads(request.data)
     for hyp in r['hypotheses']:
@@ -31,14 +35,16 @@ def api():
                            'latitude': float(r['latitude']),
                            'confidence': float(hyp['confidence']),
                            'photo': hyp['photo']}, upsert=True)
-        tokens = db.subscriptions.find_one('number', number)
-        for token in tokens:
+        for token in subscriptions[number]:
             data_message = {"EXTRA_LATITUDE": float(r['latitude']),
                             "EXTRA_LONGITUDE": float(r['longitude'])}
+            print(number)
+            print(subscriptions[number])
             result = push_service.notify_single_device(registration_id=token,
                                                        message_title=message_title,
                                                        data_message=data_message,
                                                        click_action="MapsActivity")
+            print(result)
     return "ok"
 
 
@@ -73,13 +79,9 @@ def query():
 @app.route("/subscribe", methods=["POST"])
 def subscribe():
     data = json.loads(request.data)
-    tokens = db.subscriptions.find_one('number', data['number'])
-    if tokens is None:
-        db.subscriptions.update({data['number']: [data['token']]})
-    else:
-        tokens.append(data['token'])
-        db.subscriptions.update({data['number']: tokens})
-    return {"status": True}
+    subscriptions[data["number"]].append(data["token"])
+    print(dict(subscriptions))
+    return json.dumps({"status": True})
 
 
 @app.route('/')
@@ -108,4 +110,4 @@ def bgpng():
 
 
 if __name__ == "__main__":
-    app.run('0.0.0.0', port=12346)
+    app.run('0.0.0.0', port=12345)

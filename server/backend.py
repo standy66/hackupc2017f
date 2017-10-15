@@ -20,7 +20,7 @@ print('DEBUG: %d' % args.debug)
 app = Flask(NAME, static_url_path=os.path.dirname(os.getcwd()))
 cli = pymongo.MongoClient('localhost', 27017)
 db = cli[NAME]
-push_service = FCMNotification(api_key=os.getenv("API_KEY"))
+#push_service = FCMNotification(api_key=os.getenv("API_KEY"))
 
 
 @app.route("/api", methods=['GET', 'POST'])
@@ -35,16 +35,16 @@ def api():
                            'latitude': float(r['latitude']),
                            'confidence': float(hyp['confidence']),
                            'photo': hyp['photo']}, upsert=True)
-        for token in subscriptions[number]:
-            data_message = {"EXTRA_LATITUDE": float(r['latitude']),
-                            "EXTRA_LONGITUDE": float(r['longitude'])}
-            print(number)
-            print(subscriptions[number])
-            result = push_service.notify_single_device(registration_id=token,
-                                                       message_title=message_title,
-                                                       data_message=data_message,
-                                                       click_action="MapsActivity")
-            print(result)
+        #for token in subscriptions[number]:
+        #    data_message = {"EXTRA_LATITUDE": float(r['latitude']),
+        #                    "EXTRA_LONGITUDE": float(r['longitude'])}
+        #    print(number)
+        #    print(subscriptions[number])
+        #    result = push_service.notify_single_device(registration_id=token,
+        #                                               message_title=message_title,
+        #                                               data_message=data_message,
+        #                                               click_action="MapsActivity")
+        #    print(result)
     return "ok"
 
 

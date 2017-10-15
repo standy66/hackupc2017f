@@ -49,10 +49,10 @@ while(True):
                 prefix = "*"
             print("  %s %12s%12f" % (prefix, candidate['plate'], candidate['confidence']))
 
-            image_resized = cv2.imdecode(image, flags=0)
+            re, image_jpg = cv2.imencode(".jpg", rgb_frame)
             hypotheses.append({"number": candidate["plate"],
                                "confidence": candidate['confidence'],
-                               "photo": base64.b64encode(image_resized)})
+                               "photo": base64.b64encode(image_jpg)})
             print(candidate["plate"], candidate["confidence"])
 
     if len(hypotheses) == 0:

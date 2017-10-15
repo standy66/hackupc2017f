@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.logging.Logger;
 
@@ -16,13 +17,25 @@ import java.util.logging.Logger;
  */
 
 public class InitialActivity extends AppCompatActivity {
+    View notification_view;
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        notification_view.setVisibility(View.INVISIBLE);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        new CarRadarAPI(this, "http://dolgop.standy.me");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial);
         Button nextButton = (Button) findViewById(R.id.next_button);
         final EditText emailField = (EditText) findViewById(R.id.user_email);
         final EditText licensePlateNumber = (EditText) findViewById(R.id.license_plate_number);
+        notification_view = findViewById(R.id.notification_layout);
+
 
         licensePlateNumber.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
 
@@ -39,11 +52,28 @@ public class InitialActivity extends AppCompatActivity {
                     return;
                 }
 
+
+
                 String email = licensePlateNumber.getText().toString();
                 String licencePlate = licensePlateNumber.getText().toString();
 
-                Intent intent = new Intent(InitialActivity.this, MapsActivity.class);
-                startActivity(intent);
+                CarRadarAPI.getInstance().query(licencePlate, new CarRadarAPI.QueryResultListener() {
+                    @Override
+                    public void onResult(CarRadarAPI.QueryResult result) {
+                        if (result != null) {
+                            Toast.makeText(InitialActivity.this, "HOT", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(InitialActivity.this, MapsActivity.class);
+
+                            intent.putExtra("EXTRA_LATITUDE", result.latitude);
+                            intent.putExtra("EXTRA_LONGITUDE", result.longitude);
+
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(InitialActivity.this, "NOT", Toast.LENGTH_LONG).show();
+                            notification_view.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
             }
         });
     }

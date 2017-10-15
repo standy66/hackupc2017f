@@ -1,5 +1,6 @@
 package me.standy.findmycar.findmycar;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -37,10 +38,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        Intent intent = this.getIntent();
+        if (intent.hasExtra("EXTRA_LATITUDE")) {
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            LatLng point = new LatLng(intent.getDoubleExtra("EXTRA_LATITUDE", 0.0),
+                    intent.getDoubleExtra("EXTRA_LONGITUDE", 0.0));
+            mMap.addMarker(new MarkerOptions().position(point).title("Marker in Sydney"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+        }
     }
 }

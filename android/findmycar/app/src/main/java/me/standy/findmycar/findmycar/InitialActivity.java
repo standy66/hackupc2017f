@@ -1,6 +1,8 @@
 package me.standy.findmycar.findmycar;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
@@ -62,12 +64,24 @@ public class InitialActivity extends AppCompatActivity {
                     public void onResult(CarRadarAPI.QueryResult result) {
                         if (result != null) {
                             Toast.makeText(InitialActivity.this, "HOT", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(InitialActivity.this, MapsActivity.class);
 
-                            intent.putExtra("EXTRA_LATITUDE", result.latitude);
-                            intent.putExtra("EXTRA_LONGITUDE", result.longitude);
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+                            Log.w("MAIN", String.valueOf(result.photo.length));
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(result.photo, 0,
+                                    result.photo.length, options);
 
-                            startActivity(intent);
+                            if (bitmap != null) {
+                                Intent intent = new Intent(InitialActivity.this, ClaimActivity.class);
+                                intent.putExtra("EXTRA_LATITUDE", result.latitude);
+                                intent.putExtra("EXTRA_LONGITUDE", result.longitude);
+                                intent.putExtra("EXTRA_IMAGE", bitmap);
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(InitialActivity.this, MapsActivity.class);
+                                intent.putExtra("EXTRA_LATITUDE", result.latitude);
+                                intent.putExtra("EXTRA_LONGITUDE", result.longitude);
+                                startActivity(intent);
+                            }
                         } else {
                             Toast.makeText(InitialActivity.this, "NOT", Toast.LENGTH_LONG).show();
                             notification_view.setVisibility(View.VISIBLE);

@@ -104,5 +104,10 @@ def mainjs():
     return app.send_static_file('main.js')
 
 
+@app.route('/bg.png')
+def bgpng():
+	return app.send_static_file('bg.png')
+
+
 if __name__ == "__main__":
     app.run('0.0.0.0', port=12345)

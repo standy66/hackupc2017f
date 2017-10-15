@@ -11,15 +11,18 @@ function initMap() {
 }
 
 $(function(){
+	$("#car-photo").hide();
 	$("#button-send").click(function() {
 		$.getJSON('query', {'number': $('#input-number').val()}, function(data) {
 			if (data['status']) {
 				$("#ret-status").html('We found your number!');
+				$("#car-photo").show();
 				$("#car-photo").attr('src', 'data:image/png;base64,' + data['result']['photo']);
 				$('#map').css('opacity', '1');
 			}
 			else {
 				$("#ret-status").html('Your number is not found yet. We will notify you in case we catch it.');
+				$("#car-photo").hide();
 				$("#car-photo").attr('src', '');
 				$('#map').css('opacity', '0');
 			}

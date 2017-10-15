@@ -25,11 +25,9 @@ while(True):
     while frame is None:
         et, frame = capture.read()
 
-    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    print(rgb_frame.shape)
     print("processing frame")
 
-    ret, image = cv2.imencode('.bmp', rgb_frame)
+    ret, image = cv2.imencode('.bmp', frame)
     results = alpr.recognize_array(bytes(bytearray(image)))
     print(results)
     print("done")
@@ -49,7 +47,7 @@ while(True):
                 prefix = "*"
             print("  %s %12s%12f" % (prefix, candidate['plate'], candidate['confidence']))
 
-            re, image_jpg = cv2.imencode(".jpg", rgb_frame)
+            re, image_jpg = cv2.imencode(".jpg", frame)
             hypotheses.append({"number": candidate["plate"],
                                "confidence": candidate['confidence'],
                                "photo": base64.b64encode(image_jpg)})

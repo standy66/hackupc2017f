@@ -12,6 +12,10 @@ import android.widget.Toast;
 
 import java.util.logging.Logger;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+
 /**
  * Created by astepanov on 14/10/2017.
  */
@@ -57,6 +61,8 @@ public class InitialActivity extends AppCompatActivity {
                 String email = licensePlateNumber.getText().toString();
                 String licencePlate = licensePlateNumber.getText().toString();
 
+                String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                CarRadarAPI.getInstance().subscribe(refreshedToken, licencePlate);
                 CarRadarAPI.getInstance().query(licencePlate, new CarRadarAPI.QueryResultListener() {
                     @Override
                     public void onResult(CarRadarAPI.QueryResult result) {

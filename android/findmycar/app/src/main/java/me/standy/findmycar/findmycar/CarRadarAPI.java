@@ -60,7 +60,17 @@ public class CarRadarAPI {
     }
 
     void subscribe(String device_id, String license_plate) {
-        throw new UnsupportedOperationException("not implemented");
+        String uri = this.api_endpoint + "/subscribe";
+        JSONObject data = new JSONObject();
+        try {
+            data.put("token", device_id);
+            data.put("number", license_plate);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, uri, data, null, null);
+        queue.add(request);
     }
 
 

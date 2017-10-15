@@ -3,6 +3,7 @@ package me.standy.findmycar.findmycar;
 import android.app.Application;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.util.Base64;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,13 +31,13 @@ public class CarRadarAPI {
         public double latitude;
         public double longitude;
         public double confidence;
-        public String photo;
+        public byte[] photo;
 
-        public QueryResult(double latitude, double longitude, double confidence, String photo) {
+        public QueryResult(double latitude, double longitude, double confidence, String photo_base64) {
             this.latitude = latitude;
             this.longitude = longitude;
             this.confidence = confidence;
-            this.photo = photo;
+            this.photo = Base64.decode(photo_base64, Base64.DEFAULT);
         }
     };
 
@@ -59,7 +60,16 @@ public class CarRadarAPI {
     }
 
     void subscribe(String device_id, String license_plate) {
-        throw new UnsupportedOperationException("not implemented");
+        String uri = this.api_endpoint + "/subscribe";
+        JSONObject data = new JSONObject();
+        try {
+            data.put("token", device_id);
+            data.put("number", license_plate);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, uri, data, null, null);
+        queue.add(request);
     }
 
 

@@ -1,0 +1,65 @@
+body {
+    background: #00b1dd;
+    color: #000;
+    margin: 0;
+    padding: 50px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 12pt;
+}
+
+#content {
+	width: 40%;
+	margin: auto;
+}
+
+#content input {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#content input[type="text"] {
+	padding: 16px;
+	font-size: 24pt;
+	border: 4px solid #ccc;
+	width: 92%;
+	border-radius: 10px;
+	box-shadow: 0 0 30px rgba(0,0,0,0.2);
+}
+
+#content input[type="text"]:focus {
+	border-color: #fdd835;
+}
+
+#content button {
+	background-color: #4CAF50;
+	border: 4px solid white;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: block;
+	font-size: 24pt;
+	border-radius: 10px;
+	box-shadow: 0 0 30px rgba(0,0,0,0.2);
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#content button:hover {
+	cursor: pointer;
+}
+
+#car-photo {
+	width: 100%;
+	border: 4px solid #ccc;
+	border-radius: 10px;
+	box-shadow: 0 0 30px rgba(0,0,0,0.2);
+}
+
+#map {
+	height: 400px;
+	width: 100%;
+}
+
+

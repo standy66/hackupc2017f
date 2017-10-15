@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" type="image/png" href="favicon.png">
+	<title>Car Radar</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="content" align="center">
+<div id="map"></div>
+<img id="car-photo" alt="No photo" src="" />
+<div id="ret-status"></div>
+<input id="input-email" type="text" name="email" placeholder="Enter your e-mail..." />
+<input id="input-number" type="text" name="number" placeholder="Enter the license plate you are looking for..." />
+<button id="button-send">Find</button>
+</div>
+
+<script src="main.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWlNgK8NwV8UYnUZXwpnMqkutzRoUayNU&callback=initMap"></script>
+
+</body>
+</html>
+

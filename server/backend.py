@@ -1,7 +1,8 @@
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 import json
 import pymongo
 import argparse
+import os
 
 
 parser = argparse.ArgumentParser()
@@ -12,7 +13,7 @@ NAME = 'findmycar'
 
 print('DEBUG: %d' % args.debug)
 
-app = Flask(NAME)
+app = Flask(NAME, static_url_path=os.path.dirname(os.getcwd()))
 cli = pymongo.MongoClient('localhost', 27017)
 db = cli[NAME]
 
@@ -55,6 +56,26 @@ def query():
 		del cur['_id']
 		result = {'status': True, 'result': cur}
 	return json.dumps(result)
+
+
+@app.route('/')
+def serve_static():
+	return app.send_static_file('index.html')
+
+
+@app.route('/favicon.png')
+def favicon():
+	return app.send_static_file('favicon.png')
+
+
+@app.route('/style.css')
+def style():
+	return app.send_static_file('style.css')
+
+
+@app.route('/main.js')
+def mainjs():
+	return app.send_static_file('main.js')
 
 
 if __name__ == "__main__":

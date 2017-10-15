@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="me.standy.findmycar.findmycar.ClaimActivity"
+    android:weightSum="1"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/car_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/googleg_standard_color_18"
+        android:layout_weight="0.44" />
+
+    <LinearLayout
+        android:paddingTop="100dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/yes_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.44"
+            android:text="Yes" />
+
+        <Button
+            android:id="@+id/no_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.44"
+            android:text="No" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

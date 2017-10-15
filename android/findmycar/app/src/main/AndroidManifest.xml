@@ -57,10 +57,18 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
+            android:label="@string/title_activity_maps"
+            android:parentActivityName=".ClaimActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.standy.findmycar.findmycar.ClaimActivity" />
+        </activity>
+        <activity android:name=".ClaimActivity"
+            android:parentActivityName=".InitialActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.standy.findmycar.findmycar.InitialActivity" />
+
         </activity>
     </application>
 

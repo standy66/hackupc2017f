@@ -34,11 +34,12 @@ def api():
                                'photo': hyp['photo']}, upsert=True)
             tokens = db.subscriptions.find_one('number', number)
             for token in tokens:
-                data_message = {"EXTRA_LATITUDE": float(r['latitude'],
-                                "EXTRA_LONGITUDE": float(r['longitude']}
+                data_message = {"EXTRA_LATITUDE": float(r['latitude']),
+                                "EXTRA_LONGITUDE": float(r['longitude'])}
                 result = push_service.notify_single_device(registration_id=token,
-                message_title=message_title, data_message=data_message,
-                click_action="MapsActivity")
+                                                           message_title=message_title,
+                                                           data_message=data_message,
+                                                           click_action="MapsActivity")
     except:
         return "Format mismatch"
     return "ok"
@@ -46,30 +47,30 @@ def api():
 
 @app.route("/debug", methods=['GET', 'POST'])
 def debug():
-	if not args.debug:
-		return ""
-	out = []
-	for row in db.numbers.find():
-		out.append(str(row))
-	return "<br>\n".join(out)
+    if not args.debug:
+        return ""
+    out = []
+    for row in db.numbers.find():
+        out.append(str(row))
+    return "<br>\n".join(out)
 
 
 @app.route("/clear", methods=['GET', 'POST'])
 def clear():
-	if args.debug:
-		db.numbers.remove({})
-	return ""
+    if args.debug:
+        db.numbers.remove({})
+    return ""
 
 
 @app.route("/query", methods=['GET'])
 def query():
-	cur = db.numbers.find_one({'_id': str(request.args.get('number'))})
-	if cur is None:
-		result = {"status": False}
-	else:
-		del cur['_id']
-		result = {'status': True, 'result': cur}
-	return json.dumps(result)
+    cur = db.numbers.find_one({'_id': str(request.args.get('number'))})
+    if cur is None:
+        result = {"status": False}
+    else:
+        del cur['_id']
+        result = {'status': True, 'result': cur}
+    return json.dumps(result)
 
 
 @app.route("/subscribe", methods=["POST"])
@@ -84,26 +85,24 @@ def subscribe():
     return {"status": True}
 
 
-
-
 @app.route('/')
 def serve_static():
-	return app.send_static_file('index.html')
+    return app.send_static_file('index.html')
 
 
 @app.route('/favicon.png')
 def favicon():
-	return app.send_static_file('favicon.png')
+    return app.send_static_file('favicon.png')
 
 
 @app.route('/style.css')
 def style():
-	return app.send_static_file('style.css')
+    return app.send_static_file('style.css')
 
 
 @app.route('/main.js')
 def mainjs():
-	return app.send_static_file('main.js')
+    return app.send_static_file('main.js')
 
 
 if __name__ == "__main__":

@@ -65,7 +65,6 @@ public class CarRadarAPI {
         try {
             data.put("token", device_id);
             data.put("number", license_plate);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

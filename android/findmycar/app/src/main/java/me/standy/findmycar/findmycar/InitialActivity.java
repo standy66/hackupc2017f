@@ -17,6 +17,14 @@ import java.util.logging.Logger;
  */
 
 public class InitialActivity extends AppCompatActivity {
+    View notification_view;
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        notification_view.setVisibility(View.INVISIBLE);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         new CarRadarAPI(this, "http://dolgop.standy.me");
@@ -26,7 +34,7 @@ public class InitialActivity extends AppCompatActivity {
         Button nextButton = (Button) findViewById(R.id.next_button);
         final EditText emailField = (EditText) findViewById(R.id.user_email);
         final EditText licensePlateNumber = (EditText) findViewById(R.id.license_plate_number);
-        final View notification_view = findViewById(R.id.notification_layout);
+        notification_view = findViewById(R.id.notification_layout);
 
 
         licensePlateNumber.setFilters(new InputFilter[] {new InputFilter.AllCaps()});

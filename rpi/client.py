@@ -7,7 +7,12 @@ import numpy as np
 import requests
 import base64
 
-alpr = Alpr("eu", "/etc/openalpr/openalpr.conf", "/etc/openalpr/runtime_data")
+OPENALPR_CONF = "/etc/openalpr/openalpr.conf"
+RUNTIME_DATA = "/etc/openalpr/runtime_data"
+VIDEO_CAPTURE = "http://10.42.0.1:8081/videoView"
+WEB = "http://car-radar.standy.me/api"
+
+alpr = Alpr("eu", OPENALPR_CONF, RUNTIME_DATA)
 if not alpr.is_loaded():
     print("Error loading OpenALPR")
     sys.exit(1)
@@ -15,7 +20,7 @@ if not alpr.is_loaded():
 alpr.set_top_n(20)
 alpr.set_default_region("md")
 
-capture = cv2.VideoCapture("http://10.42.0.1:8081/videoView")
+capture = cv2.VideoCapture(VIDEO_CAPTURE)
 # is_to_send = 0
 while(True):
     if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -56,7 +61,7 @@ while(True):
     if len(hypotheses) == 0:
         continue
 
-    r = requests.post("http://findmycar.standy.me/api",
+    r = requests.post(WEB,
             json={
                 "latitude": 41.387427, 
                 "longitude": 2.112993, 
@@ -64,7 +69,6 @@ while(True):
                 }
             )
     print(r.text)
-    break
 
 # Call when completely done to release memory
 alpr.unload()
